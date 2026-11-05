@@ -43,25 +43,34 @@ export default defineConfig({
       name: 'setup',
       testMatch: /.*\.setup\.js/,
     },
+    // Read-only tests: no login, safe for CI
+    {
+       name: 'public-chromium',
+       testDir: './tests/public',
+       use: { ...devices['Desktop Chrome'] },
+    },
 
     {
-      name: 'chromium',
+       name: 'public-firefox',
+       testDir: './tests/public',
+       use: { ...devices['Desktop Firefox'] },
+    },
+
+    {
+       name: 'public-webkit',
+       testDir: './tests/public',
+       use: { ...devices['Desktop Safari'] },
+    },
+
+    // Admin tests change data: one browser only, need login
+    {
+      name: 'admin',
+      testDir: './tests/admin',
       use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },
       dependencies: ['setup'],
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'], storageState: 'playwright/.auth/user.json' },
-      dependencies: ['setup'],
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'], storageState: 'playwright/.auth/user.json' },
-      dependencies: ['setup'],
-    },
-
+    
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
