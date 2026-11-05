@@ -1,4 +1,5 @@
 # Playwright Stock News Tests
+![Playwright Tests](https://github.com/xoahtb/playwright-stock-news-tests/actions/workflows/playwright.yml/badge.svg)
 
 End-to-end tests for the admin workflow of a stock news website (https://dautuanyen.online), built with [Playwright](https://playwright.dev) and JavaScript. I built it to practice test automation: page objects, custom fixtures, a reusable login state and multi-browser runs.
 
@@ -69,7 +70,11 @@ npm test
 
 - Credentials are read from `.env` and are never committed. The saved login state in `playwright/.auth/` is also ignored by Git.
 - The tests run against a live website. They can fail if the site changes its layout, responds slowly, or has no pending post to publish.
-- [TODO: add a CI section after the GitHub Actions workflow runs green on a safe test environment.]
+## Continuous integration
+
+A GitHub Actions workflow (`.github/workflows/playwright.yml`) runs the public, read-only tests on Chromium, Firefox and WebKit on every push to `main`, and can also be started manually. The Playwright HTML report is uploaded as an artifact on each run.
+
+The admin tests change data, so they run locally only.
 
 ## Author
 
