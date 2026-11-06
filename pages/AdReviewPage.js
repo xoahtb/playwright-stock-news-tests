@@ -4,6 +4,7 @@ class AdReviewPage extends BasePage {
   constructor(page) {
     super(page);
     this.firstRowCheckbox = page.locator('input.row-chk').first();
+    this.firstRow = page.locator('tr').filter({ has: this.firstRowCheckbox });
     this.publishButton = page.getByRole('button', { name: 'Public bài đã chọn' }).first();
   }
 
@@ -13,6 +14,10 @@ class AdReviewPage extends BasePage {
 
   async getFirstPostId() {
     return this.firstRowCheckbox.getAttribute('value');
+  }
+
+  async getFirstPostTitle() {
+    return this.firstRow.locator('td').nth(3).locator('div').first().innerText();
   }
 
   async checkFirstPost() {
