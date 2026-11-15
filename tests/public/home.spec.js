@@ -13,4 +13,5 @@ test.describe('Home - Search', () => {
     await expect(searchResultsPage.heading).toContainText(keyword);
     await expect(searchResultsPage.resultWithText(keyword).first()).toBeVisible();
   });
+
 });
