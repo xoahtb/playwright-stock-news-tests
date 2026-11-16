@@ -20,6 +20,8 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run public (read-only) tests
       run: npx playwright test --project=public-chromium --project=public-firefox --project=public-webkit
+      env:
+        BASE_URL: https://dautuanyen.online
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

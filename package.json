@@ -6,7 +6,6 @@
   "scripts": {
     "pretest": "playwright install",
     "test": "npm run bddgen && playwright test",
-    "test:smoke": "playwright test --grep @smoke",
     "test:ui": "playwright test --ui",
     "bddgen": "bddgen",
     "report": "playwright show-report"

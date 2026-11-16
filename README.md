@@ -1,19 +1,21 @@
 # Playwright Stock News Tests
 ![Playwright Tests](https://github.com/xoahtb/playwright-stock-news-tests/actions/workflows/playwright.yml/badge.svg)
 
-End-to-end tests for the admin workflow of a stock news website (https://dautuanyen.online), built with [Playwright](https://playwright.dev) and JavaScript. I built it to practice test automation: page objects, custom fixtures, a reusable login state and multi-browser runs.
+End-to-end tests for the admin workflow of a stock news website (https://dautuanyen.online), built with [Playwright](https://playwright.dev) and JavaScript. I built it to practice test automation: page objects, custom fixtures, a reusable login state, multi-browser runs, and BDD with [playwright-bdd](https://github.com/vitalets/playwright-bdd).
 
 
 ## What is tested
 
 - **Admin - review and publish a post:** log in as admin (saved login state), open the review page, select the first pending post, publish it, and check that the post leaves the review list.
 - **Home page - search:** search by an article title, then check the results page URL, the results heading, and that at least one result is shown. This test is read-only.
+- **Facebook posting queue (BDD):** written as Gherkin scenarios in `features/facebook-posting-queue.feature` — queue a post for Facebook publishing, and remove a post from the queue.
 
-Important: the publish test changes data. It publishes a real pending post. Run it only on a test environment, or on a site where you have permission.
+Important: the publish test and the Facebook posting queue tests change data on the live site. Run them only on a test environment, or on a site where you have permission.
 
 ## Key features
 
 - **Page Object Model:** page classes in `pages/` (`BasePage`, `LoginPage`, `HomePage`, `AdReviewPage`) keep locators and actions out of the tests.
+- **BDD:** `playwright-bdd` compiles Gherkin `.feature` files (`features/`) and step definitions (`steps/`) into Playwright tests, run as a separate `bdd-admin-fb-queue` project.
 - **Custom fixtures:** `fixtures/index.js` extends Playwright's `test` so page objects are injected into each test.
 - **Login once:** a `setup` project logs in and saves the session, and the browser projects reuse it.
 - **Cross-browser:** Chromium, Firefox and WebKit projects.
@@ -24,8 +26,10 @@ Important: the publish test changes data. It publishes a real pending post. Run 
 
 ```
 .github/workflows/    # CI workflow (GitHub Actions)
+features/             # Gherkin .feature files (BDD scenarios)
 fixtures/             # custom Playwright fixtures
 pages/                # page objects
+steps/                # BDD step definitions
 tests/
   admin/              # admin tests (change data, need login)
   public/             # public tests (read-only, no login)
@@ -47,6 +51,7 @@ npm ci
 Copy `.env.example` to `.env` and fill in the admin login (use an account of a test environment):
 
 ```
+BASE_URL=
 USER_NAME=
 USER_PASS=
 ```
@@ -62,7 +67,7 @@ npm test
 | Command | What it does |
 |---|---|
 | `npm test` | Run all tests (installs Playwright browsers first) |
-| `npm run test:smoke` | Run only tests tagged `@smoke` |
+| `npm run bddgen` | Generate Playwright spec files from `.feature` files (runs automatically before `npm test`) |
 | `npm run test:ui` | Open Playwright UI mode |
 | `npm run report` | Open the last HTML report |
 
