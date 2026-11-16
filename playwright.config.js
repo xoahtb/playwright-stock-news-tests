@@ -9,6 +9,13 @@ import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+import { defineBddConfig } from 'playwright-bdd';
+
+const bddTestDir = defineBddConfig({
+  features: 'features/*.feature',
+  steps: ['steps/*.steps.js', 'fixtures/index.js'],
+});
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -31,7 +38,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: 'https://dautuanyen.online',
+    baseURL: process.env.BASE_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -66,6 +73,14 @@ export default defineConfig({
     {
       name: 'admin',
       testDir: './tests/admin',
+      use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },
+      dependencies: ['setup'],
+    },
+
+    // BDD features: admin-only flows, need login
+    {
+      name: 'bdd-admin-fb-queue',
+      testDir: bddTestDir,
       use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },
       dependencies: ['setup'],
     },

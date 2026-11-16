@@ -1,10 +1,12 @@
 const base = require('@playwright/test');
+const { test: bddBase } = require('playwright-bdd');
 const { LoginPage } = require('../pages/LoginPage');
 const { HomePage } = require('../pages/HomePage');
 const { AdReviewPage } = require('../pages/AdReviewPage');
 const { SearchResultsPage } = require('../pages/SearchResultsPage');
+const { PostFacebookPage } = require('../pages/PostFacebookPage');
 
-const test = base.test.extend({
+const test = bddBase.extend({
   loginPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await use(loginPage);
@@ -20,6 +22,10 @@ const test = base.test.extend({
   searchResultsPage: async ({ page }, use) => {
     const searchResultsPage = new SearchResultsPage(page);
     await use(searchResultsPage);
+  },
+  postFacebookPage: async ({ page }, use) => {
+    const postFacebookPage = new PostFacebookPage(page);
+    await use(postFacebookPage);
   },
 });
 
